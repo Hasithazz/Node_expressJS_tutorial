@@ -4,12 +4,21 @@
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
-    <ul>
-        <% for (products of cartProducts){ %>
-            <li>
-                <%= products.title %>
-            </li>
-        <% } %>
-    </ul>
+    <% if (cartProducts.length > 0) { %>
+        <ul>
+            <% cartProducts.forEach(productData =>{ %>
+                <% console.log('productTitle', productData.product.title) %>
+                <li>
+                    <%= productData.product.title %>
+                    (
+                    <%= productData.qty %>
+                    )
+                </li>
+            <% }) %>
+
+        </ul>
+    <% } else { %>
+        <h2>No Items in the Cart</h2>
+    <% } %>
 </main>
 <%- include('../includes/end.ejs') %>

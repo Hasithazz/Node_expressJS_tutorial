@@ -38,8 +38,9 @@ exports.getCart = (req, res, next) => {
         let cartProducts = [];
         Product.fetchALL(products => {
             for (product of products) {
-                if(cart.products.find(prod => prod.id === product.id)) {
-                    cartProducts.push(product);
+                const cartProductData = cart.products.find(prod => prod.id === product.id)
+                if (cartProductData) {
+                    cartProducts.push({product: product, qty: cartProductData.qty});
                 }
             }
             res.render('shop/cart', {
