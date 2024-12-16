@@ -6,10 +6,12 @@ const Cart = require("./cart");
 
 const getProductsFromFile = (cb) => {
     fs.readFile(p, (err, fileContent) => {
-        if (err) {
+        if (err || fileContent.length < 1) {
             return cb([]);
         }
-        return cb(JSON.parse(fileContent));
+        if (fileContent)
+            return cb(JSON.parse(fileContent));
+
     });
 };
 
@@ -38,7 +40,7 @@ module.exports = class Product {
         getProductsFromFile((products) => {
             const deletedProduct = products.find(p => p.id === id);
             const updateProduct = products.filter(products => products.id !== id);
-             Cart.deleteProduct(deletedProduct.id, deletedProduct.price);
+            Cart.deleteProduct(deletedProduct.id, deletedProduct.price);
             fs.writeFile(p, JSON.stringify(updateProduct), (err) => {
                 console.log(err);
             });
