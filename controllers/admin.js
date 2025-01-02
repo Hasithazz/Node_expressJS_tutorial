@@ -1,20 +1,22 @@
-const Product = require("../models/product");
+const Product = require('../models/product');
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchALL((products) => {
+    Product.findAll().then((products) => {
         res.render('admin/products', {
             pageTitle: 'Admin Products',
             path: '/admin/products',
-            prods: products
-        })
-    });
+            prods: products,
+        });
+    }).catch(err => {
+        console.log(err)
+    })
 };
 
 exports.getAddProducts = (req, res, next) => {
-    res.render("admin/edit-product", {
-        pageTitle: "Add Product",
-        path: "/admin/add-product",
-        editing: false
+    res.render('admin/edit-product', {
+        pageTitle: 'Add Product',
+        path: '/admin/add-product',
+        editing: false,
     });
 };
 
@@ -24,9 +26,11 @@ exports.postAddProducts = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
 
-    const product = new Product(null, title, imageUrl, description, price);
-    product.save();
-    res.redirect("/");
+    Product.create({title: title, price: price, imageUrl: imageUrl, description: description}).then((result) => {
+        console.log(result)
+    }).catch(err => {
+        console.log(err)
+    });
 };
 
 exports.getEditProducts = (req, res, next) => {
@@ -35,13 +39,13 @@ exports.getEditProducts = (req, res, next) => {
     if (!editMode) {
         res.redirect('/');
     }
-    Product.findById(productId, product => {
-        console.log(product)
-        res.render("admin/edit-product", {
-            pageTitle: "Add Product",
-            path: "/admin/edit-product",
+    Product.findById(productId, (product) => {
+        console.log(product);
+        res.render('admin/edit-product', {
+            pageTitle: 'Add Product',
+            path: '/admin/edit-product',
             editing: editMode,
-            product: product
+            product: product,
         });
     });
 };
@@ -52,16 +56,14 @@ exports.postEditProducts = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
     const id = req.body.productId;
-    console.log(id, ' this is id')
+    console.log(id, ' this is id');
     const product = new Product(id, title, imageUrl, description, price);
     product.save();
-    res.redirect("/admin/products");
+    res.redirect('/admin/products');
 };
 
 exports.postDeleteProducts = (req, res, next) => {
     const productId = req.body.productId;
     Product.deleteById(productId);
     res.redirect('/admin/products');
-}
-
-
+};
