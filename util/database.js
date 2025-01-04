@@ -1,8 +1,8 @@
-const Sequalize = require('sequelize');
+const Sequelize = require('sequelize');
 
-const sequalize = new Sequalize('nodetutdb', 'root', 'password', {
+const sequelize = new Sequelize('nodetutdb', 'root', 'password', {
   dialect: 'mysql',
   host: 'localhost',
 });
 
-module.exports = sequalize;
+module.exports = sequelize;
