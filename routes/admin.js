@@ -6,12 +6,12 @@ const router = express.Router();
 
 // /admin/add-product => GET
 router.get("/add-product", adminController.getAddProducts);
-router.get("/products", adminController.getProducts);
-router.get("/edit-product/:productId", adminController.getEditProducts);
+// router.get("/products", adminController.getProducts);
+// router.get("/edit-product/:productId", adminController.getEditProducts);
 
 // /admin/add-product => POST
 router.post("/add-product", adminController.postAddProducts);
-router.post("/edit-product", adminController.postEditProducts);
-router.post("/delete-product", adminController.postDeleteProducts);
+// router.post("/edit-product", adminController.postEditProducts);
+// router.post("/delete-product", adminController.postDeleteProducts);
 
 module.exports = router;
