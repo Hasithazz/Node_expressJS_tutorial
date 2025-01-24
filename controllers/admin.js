@@ -3,7 +3,6 @@ const Product = require('../models/product');
 exports.getProducts = (req, res, next) => {
 
     Product.findAll().then((products) => {
-        console.log(products[0]._id);
         res.render('admin/products', {
             pageTitle: 'Admin Products',
             path: '/admin/products',
@@ -81,15 +80,9 @@ exports.postEditProducts = (req, res, next) => {
 
 exports.postDeleteProducts = (req, res, next) => {
     const productId = req.body.productId;
-    Product.findByPk(productId)
-        .then((product) => {
-            return product.destroy();
-        })
-        .then((result) => {
-            console.log('Product deleted successfully');
-            res.redirect('/admin/products');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    Product.deleteById(productId).then(() => {
+        res.redirect('/admin/products');
+    }).catch(error => {
+        console.log(error);
+    });
 };

@@ -1,5 +1,4 @@
 const mongodb = require('mongodb');
-const _this = require("./product");
 const getDb = require('../util/database').getDb;
 
 class Product {
@@ -9,7 +8,7 @@ class Product {
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
-        this._id = new mongodb.ObjectId(id);
+        this._id = id ? new mongodb.ObjectId(id) : null;
     }
 
     static findAll() {
@@ -25,6 +24,15 @@ class Product {
         const db = getDb();
         return db.collection('products').find({_id: new mongodb.ObjectId(id)}).next().then(product => {
             return product;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    static deleteById(id) {
+        const db = getDb();
+        return db.collection('products').deleteOne({_id: new mongodb.ObjectId(id)}).then(result => {
+
         }).catch(error => {
             console.log(error);
         });
