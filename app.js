@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
-app.use(errorController.get404Page);
+app.use(errorController.get404);
 
 mongoose
   .connect(
