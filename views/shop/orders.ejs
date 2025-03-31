@@ -1,20 +1,20 @@
+<link rel="stylesheet" href="/css/orders.css">
 <%- include('../includes/head.ejs') %>
 </head>
-
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
     <% if(orders.length > 0) { %>
-        <ul>
+        <ul class="orders">
             <% orders.forEach(order=>{ %>
-                <li>
+                <li class="orders__item">
                     <h1>
-                        <%= order.id; %>
+                        Order - <%= order.id; %>
                     </h1>
-                    <ul>
-                        <% order.products.forEach(product=>{ %>
-                            <li>
-                                <%= product.title %> ( <%= product.orderItem.quantity %> )
+                    <ul class="orders__products">
+                        <% order.orderItems.forEach(orderItem=>{ %>
+                            <li class="orders__products-item">
+                                <%= orderItem.product.title %> ( <%= orderItem.quantity %> )
                             </li>
                         <% }) %>
                     </ul>
