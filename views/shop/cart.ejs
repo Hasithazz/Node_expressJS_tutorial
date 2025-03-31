@@ -1,36 +1,32 @@
-<link rel="stylesheet" href="/css/cart.css">
 <%- include('../includes/head.ejs') %>
-</head>
+    <link rel="stylesheet" href="/css/cart.css">
+    </head>
 
-<body>
-<%- include('../includes/navigation.ejs') %>
-<main>
-    <% if (cartProducts.length > 0) { %>
-        <ul class="cart__item-list">
-            <% cartProducts.forEach(productData =>{ %>
-                <li class="cart__item">
-                    <h1>
-                        <%= productData.productId.title %>
-                    </h1>
-                    <h2>
-                        <%= productData.quantity %>
-                    </h2>
-                    <form action="/cart-delete-item" method="post">
-                        <input type="hidden" name="productId" value="<%= productData.productId._id %>">
-                        <button class="btn danger" type="submit">Delete</button>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if (products.length > 0) { %>
+                <ul class="cart__item-list">
+                    <% products.forEach(p => { %>
+                        <li class="cart__item">
+                            <h1><%= p.productId.title %></h1>
+                            <h2>Quantity: <%= p.quantity %></h2>
+                            <form action="/cart-delete-item" method="POST">
+                                <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                                <button class="btn danger" type="submit">Delete</button>
+                            </form>
+                        </li>
+                    <% }) %>
+                </ul>
+                <hr>
+                <div class="centered">
+                    <form action="/create-order" method="POST">
+                        <button type="submit" class="btn">Order Now!</button>
                     </form>
-                </li>
-            <% }) %>
-        </ul>
-        <hr>
-        <div class="centered">
-            <form action="/create-order" method="post">
-                <button class="btn" type="submit">Order Now!</button>
-            </form>
-        </div>
-
-    <% } else { %>
-        <h2>No Items in the Cart</h2>
-    <% } %>
-</main>
-<%- include('../includes/end.ejs') %>
+                </div>
+                
+            <% } else { %>
+                <h1>No Products in Cart!</h1>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>
