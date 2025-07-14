@@ -48,9 +48,9 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-    console.log(req.session.user);
-    if (req.session.user) {
-        User.findById(req.session.user._id)
+    console.log(req.user);
+    if (req.user) {
+        User.findById(req.user._id)
             .populate('cart.items.productId')
             .then(user => {
                 const products = user.cart.items;
@@ -76,7 +76,7 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
 
-    User.findById(req.session.user).then(user => {
+    User.findById(req.user).then(user => {
         Product.findById(prodId)
             .then(product => {
                 return user.addToCart(product);
@@ -91,7 +91,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    User.findById(req.session.user).then(user => {
+    User.findById(req.user).then(user => {
         user.removeFromCart(prodId)
             .then(result => {
                 res.redirect('/cart');
@@ -103,7 +103,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
     let currentUser;
-    User.findById(req.session.user)
+    User.findById(req.user)
         .populate('cart.items.productId')
         .then(user => {
             currentUser = user;
@@ -115,8 +115,8 @@ exports.postOrder = (req, res, next) => {
             });
             const order = new Order({
                                         user: {
-                                            name: req.session.user.name,
-                                            userId: req.session.user
+                                            name: req.user.name,
+                                            userId: req.user
                                         },
                                         products: products
                                     });
@@ -132,7 +132,7 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-    Order.find({'user.userId': req.session.user._id})
+    Order.find({'user.userId': req.user._id})
         .then(orders => {
             res.render('shop/orders', {
                 path: '/orders',
